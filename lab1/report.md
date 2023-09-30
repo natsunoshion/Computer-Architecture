@@ -239,13 +239,13 @@ void process_instruction()
 
 其中各个 case 语句内部主要是使用指令字段值、CURRENT_STATE 的各个寄存器和内存，更新 NEXT_STATE 的各个寄存器和内存。
 
-这样，逐一完善各个 case 语句，即可实现 process_instruction 函数。中间由于涉及到字节、半字的读取和写入，我还自己实现了 mem_read_8 等函数，这些函数主要调用了 shell. C 文件中实现的 mem_read_32 () 和 mem_write_32 () 来访问内存。
+这样，逐一完善各个 case 语句，即可实现 process_instruction 函数。中间由于涉及到字节、半字的读取和写入，我还自己实现了 mem_read_8 等函数，这些函数主要调用了 `shell.c` 文件中实现的 mem_read_32 () 和 mem_write_32 () 来访问内存。
 
-完整 sim.c 的代码见文件夹中的 src 目录，也可参考 [natsunoshion/Computer-Architecture (github.com)](https://github.com/natsunoshion/Computer-Architecture)。
+完整 `sim.c` 的代码见文件夹中的 src 目录，也可参考 [natsunoshion/Computer-Architecture (github.com)](https://github.com/natsunoshion/Computer-Architecture)。
 
 ## 其他改进
 
-首先，QtSpim 并不好用，我在尝试后发现频频报错。经过查阅报错资料，我在 Stack Overflow 上了解到 **Mars 更适合将 MIPS 汇编语言转为机器码**。（参考：[assembly - How to get the machine code from Mars simulator - Stack Overflow](https://stackoverflow.com/questions/60944579/how-to-get-the-machine-code-from-mars-simulator)）首先，在官网上下载 Mars4_5. Jar，安装 Java，然后将此 jar 文件复制到 inputs 文件夹下，并新建文件 `MarsCompiler.java`：
+首先，QtSpim 并不好用，我在尝试后发现频频报错。经过查阅报错资料，我在 Stack Overflow 上了解到 **Mars 更适合将 MIPS 汇编语言转为机器码**。（参考：[assembly - How to get the machine code from Mars simulator - Stack Overflow](https://stackoverflow.com/questions/60944579/how-to-get-the-machine-code-from-mars-simulator)）首先，在官网上下载 Mars4_5.jar，安装 Java，然后将此 jar 文件复制到 inputs 文件夹下，并新建文件 `MarsCompiler.java`：
 
 ```java
 import mars.*;
@@ -328,7 +328,7 @@ clean:
 
 >also write one or more programs using all of the required MIPS instructions that are listed in the table above
 
-所以这里为了进一步验证结果，我自己编写了另一个汇编代码文件，**该汇编代码包括了表中所有的 53 条指令**。代码如下：（更细节的控制流在下面的测试部分解释）
+所以这里为了进一步验证结果，我自己编写了另一个汇编代码文件 `extratest.s`，**该汇编代码包括了表中所有的 53 条指令**。代码如下：（更细节的控制流在下面的测试部分解释）
 
 ```mipsasm
 .text
