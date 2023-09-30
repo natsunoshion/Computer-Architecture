@@ -133,7 +133,7 @@ void process_instruction()
      * access memory. */
     uint32_t instruction = mem_read_32(CURRENT_STATE.PC);
 
-	// 计算字段 op rs rt rd shamt funct imm target 等
+    // 计算字段 op rs rt rd shamt funct imm target 等
     uint8_t op = instruction >> 26 & 0x3F;
     uint8_t rs = instruction >> 21 & 0x1F;
     uint8_t rt = instruction >> 16 & 0x1F;
@@ -163,7 +163,7 @@ void process_instruction()
         switch (funct)
         {
         case FUNCT_SLL:
-	        // 省略...
+            // 省略...
         }
         break;
 
