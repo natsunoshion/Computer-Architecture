@@ -140,6 +140,11 @@ b --如果opcode字段是1--> e[进一步通过rt字段区分BLTZ BGEZ BLTZAL BG
 
 这样，后续的 case 语句就好写很多了。
 
+细节部分有：
+
+- 提取指令时，需要**按符号扩展立即数**至 32 位。
+- 立即数作为地址偏移时，需要左移 2 位（因为是字偏移地址）。
+
 ### 主体框架
 
 代码的主体部分框架为：
@@ -159,10 +164,11 @@ void process_instruction()
     uint8_t rd = instruction >> 11 & 0x1F;
     uint8_t shamt = instruction >> 6 & 0x1F;
     uint8_t funct = instruction & 0x3F;
-    uint16_t imm = instruction & 0xFFFF;
+    int16_t imm = instruction & 0xFFFF;
     uint32_t target = (instruction & 0x3FFFFFF) << 2;
     int32_t extended_imm = (int32_t)imm;
-    uint32_t address = CURRENT_STATE.REGS[rs] + imm;
+    int32_t offset = extended_imm << 2;
+    uint32_t address = CURRENT_STATE.REGS[rs] + offset;
 
     /* 更新 PC，就连 SYSCALL 也一定会增加 4
      * "No registers are modified in either case,
@@ -445,7 +451,7 @@ L13:
 
 看出 `$6 = 7` 且 `$7 = 0 `。
 
-接下来执行 L4 部分，注意，编写的汇编代码中有伪指令 li 和 la，分别是加载立即数和加载地址，**它们在经过 MARS 汇编之后会翻译为已经实现的其他指令**（如 addiu 等），所以无需担心。L4 部分较长，先运行 sw 部分：
+接下来执行 L4 部分，注意，编写的汇编代码中有伪指令 li 和 la，分别是加载立即数和加载地址，**它们在经过 MARS 汇编之后会翻译为已经实现的其他指令**（如 `addiu` 等），所以无需担心。L4 部分较长，先运行 sw 部分：
 
 ![](https://i.imgur.com/kFZpyVD.png)
 
