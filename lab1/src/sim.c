@@ -131,8 +131,8 @@ void process_instruction()
     int16_t imm = instruction & 0xFFFF; // 需要以有符号的形式读入
     uint32_t target = (instruction & 0x3FFFFFF) << 2;
     int32_t extended_imm = (int32_t)imm;
+    uint32_t address = CURRENT_STATE.REGS[rs] + imm;
     int32_t offset = extended_imm << 2; // 这里的符号有点坑，直接用 (instruction & 0xFFFF) << 2 是不行的
-    uint32_t address = CURRENT_STATE.REGS[rs] + offset;
     // printf("%x ", offset);
 
     // printf("%x\n", instruction);

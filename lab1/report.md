@@ -143,7 +143,6 @@ b --如果opcode字段是1--> e[进一步通过rt字段区分BLTZ BGEZ BLTZAL BG
 细节部分有：
 
 - 提取指令时，需要**按符号扩展立即数**至 32 位。
-- 立即数作为地址偏移时，需要左移 2 位（因为是字偏移地址）。
 
 ### 主体框架
 
@@ -167,8 +166,8 @@ void process_instruction()
     int16_t imm = instruction & 0xFFFF;
     uint32_t target = (instruction & 0x3FFFFFF) << 2;
     int32_t extended_imm = (int32_t)imm;
+    uint32_t address = CURRENT_STATE.REGS[rs] + imm;
     int32_t offset = extended_imm << 2;
-    uint32_t address = CURRENT_STATE.REGS[rs] + offset;
 
     /* 更新 PC，就连 SYSCALL 也一定会增加 4
      * "No registers are modified in either case,
