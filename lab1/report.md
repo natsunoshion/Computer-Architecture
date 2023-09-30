@@ -33,9 +33,7 @@
 
 根据实验指导：
 
-> Finally, note that your simulator does not have to handle instructions that we do not include in
-> the table above, or any other invalid instructions. We will only test your simulator with valid code
-> that uses the instructions listed above.
+> Finally, note that your simulator does not have to handle instructions that we do not include in the table above, or any other invalid instructions. We will only test your simulator with valid code that uses the instructions listed above.
 
 故本模拟器并不需要判断指令是否非法。
 
