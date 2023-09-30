@@ -150,14 +150,16 @@ void process_instruction()
      * except that PC is incremented to the next instruction as usual." */
     NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 
+    // 按 opcode 区分
     switch (op)
     {
 
-  // R 型指令
+    // R 型指令
     case OP_RTYPE:
 
         uint32_t funct = instruction & 0x3F;
 
+        // 按 funct 字段区分
         switch (funct)
         {
         case FUNCT_SLL:
@@ -169,7 +171,7 @@ void process_instruction()
     case OP_J:
 	    // 省略...
 
-  // 特殊的跳转指令
+    // 特殊的跳转指令
     case OP_BSPECIAL:
         switch (rt)
         {
@@ -209,7 +211,7 @@ void process_instruction()
         break;
 
     default:
-        // Invalid opcode, do nothing
+        // 非法指令，什么也不做
     }
 }
 ```

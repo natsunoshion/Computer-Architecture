@@ -70,12 +70,14 @@
 #define RT_BLTZAL 0x10
 #define RT_BGEZAL 0x11
 
+// 读取字节
 int8_t mem_read_8(uint32_t addr)
 {
     uint32_t value = mem_read_32(addr);
     return (int8_t)(value & 0xff);
 }
 
+// 读取半字
 int16_t mem_read_16(uint32_t addr)
 {
     uint32_t value = mem_read_32(addr);
@@ -96,6 +98,7 @@ int32_t mem_read_16u(uint32_t addr)
     return (uint32_t)(value & 0xffff);
 }
 
+// 写字节
 void mem_write_8(uint32_t addr, uint32_t value)
 {
     uint32_t original = mem_read_32(addr);
@@ -103,6 +106,7 @@ void mem_write_8(uint32_t addr, uint32_t value)
     mem_write_32(addr, updated);
 }
 
+// 写半字
 void mem_write_16(uint32_t addr, uint32_t value)
 {
     uint32_t original = mem_read_32(addr);
@@ -117,6 +121,7 @@ void process_instruction()
      * access memory. */
     uint32_t instruction = mem_read_32(CURRENT_STATE.PC);
 
+    // 计算字段 op rs rt rd shamt funct imm target 等
     uint8_t op = instruction >> 26 & 0x3F;
     uint8_t rs = instruction >> 21 & 0x1F;
     uint8_t rt = instruction >> 16 & 0x1F;
@@ -137,6 +142,7 @@ void process_instruction()
      * except that PC is incremented to the next instruction as usual." */
     NEXT_STATE.PC = CURRENT_STATE.PC + 4;
 
+    // 按 opcode 区分
     switch (op)
     {
 
@@ -145,6 +151,7 @@ void process_instruction()
         uint32_t funct = instruction & 0x3F;
         // printf("rtype: %d\n", instruction);
 
+        // 按 funct 字段区分
         switch (funct)
         {
         case FUNCT_SLL:
@@ -420,6 +427,7 @@ void process_instruction()
         }
         break;
 
+    // 特殊的跳转指令
     case OP_BSPECIAL:
         switch (rt)
         {
@@ -459,6 +467,6 @@ void process_instruction()
         break;
 
     default:
-        // Invalid opcode, do nothing
+        // 非法指令，什么也不做
     }
 }
