@@ -12,11 +12,32 @@
 
 ## R 型、I 型和 J 型的区分
 
-接下来，对 R 型、I 型和 J 型三种类型的指令进行区分，MIPS 的手册上写得比较清楚：
+本次实验需要实现的指令有：
+
+| J      | JAL    | BEQ  | BNE   | BLEZ | BGTZ    |
+| ------ | ------ | ---- | ----- | ---- | ------- |
+| ADDI   | ADDIU  | SLTI | SLTIU | ANDI | ORI     |
+| XORI   | LUI    | LB   | LH    | LW   | LBU     |
+| LHU    | SB     | SH   | SW    | BLTZ | BGEZ    |
+| BLTZAL | BGEZAL | SLL  | SRL   | SRA  | SLLV    |
+| SRLV   | SRAV   | JR   | JALR  | ADD  | DDU     |
+| SUB    | SUBU   | AND  | OR    | XOR  | NOR     |
+| SLT    | SLTU   | MULT | MFHI  | MFLO | MTHI    |
+| MTLO   | MULTU  | DIV  | DIVU  |      | SYSCALL |
+
+下面，对 R 型、I 型和 J 型三种类型的指令进行区分。MIPS 的手册上写得比较清楚：
 
 ![](https://i.imgur.com/5PDRgKg.png)
 
 注意到 R 型指令的操作码也就是 opcode 都是 0（经过查阅 MIPS 手册，本次仿真实验所需要实现的 R 型指令中的 opcode 都为 0），也就是说无法通过 opcode 区分 R 型指令，还需要借助 R 型指令的 funct 字段进行区分；而其他的 I 型指令（除了 BLTZ、BGEZ、BLTZAL、BGEZAL 四个指令以外，这四个指令的区分在下面介绍）和 J 型指令都可以通过 opcode 进行区分。
+
+根据实验指导：
+
+> Finally, note that your simulator does not have to handle instructions that we do not include in
+> the table above, or any other invalid instructions. We will only test your simulator with valid code
+> that uses the instructions listed above.
+
+故本模拟器并不需要判断指令是否非法。
 
 ## 进一步的细分
 
@@ -220,7 +241,7 @@ void process_instruction()
 
 这样，逐一完善各个 case 语句，即可实现 process_instruction 函数。中间由于涉及到字节、半字的读取和写入，我还自己实现了 mem_read_8 等函数，这些函数主要调用了 shell. C 文件中实现的 mem_read_32 () 和 mem_write_32 () 来访问内存。
 
-完整代码链接见文件夹中的 src 目录，也可参考 [natsunoshion/Computer-Architecture (github.com)](https://github.com/natsunoshion/Computer-Architecture)。
+完整 sim.c 的代码见文件夹中的 src 目录，也可参考 [natsunoshion/Computer-Architecture (github.com)](https://github.com/natsunoshion/Computer-Architecture)。
 
 ## 其他改进
 
@@ -426,7 +447,7 @@ L13:
 
 看出 `$6 = 7` 且 `$7 = 0 `。
 
-接下来执行 L4 部分，注意，编写的汇编代码中有伪指令 li 和 la，分别是加载立即数和加载地址，**它们在经过 MARS 汇编之后会翻译为已经实现的其他指令**，所以无需担心。L4 部分较长，先运行 sw 部分：
+接下来执行 L4 部分，注意，编写的汇编代码中有伪指令 li 和 la，分别是加载立即数和加载地址，**它们在经过 MARS 汇编之后会翻译为已经实现的其他指令**（如 addiu 等），所以无需担心。L4 部分较长，先运行 sw 部分：
 
 ![](https://i.imgur.com/kFZpyVD.png)
 
